@@ -1,16 +1,20 @@
-import discord
 from discord.ext import commands
-import asyncio
+import os
+import traceback
 
-client = commands.Bot(command_prefix='.')
-@client.event
-async def on_ready():
-    print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
-    print('------')
+bot = commands.Bot(command_prefix='.')
+token = os.environ['DISCORD_BOT_TOKEN']
 
-@client.command()
+@bot.event
+async def on_command_error(ctx, error):
+
+    orig_error = getattr(error, "original", error)
+
+    error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
+
+    await ctx.send(error_msg)
+
+@bot.command()
 async def rect(ctx, about = "募集", cnt = 4, settime = 10.0):
     cnt, settime = int(cnt), float(settime)
     reaction_member = [">>>"]

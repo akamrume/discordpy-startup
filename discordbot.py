@@ -1,4 +1,4 @@
-import dicord
+import discord
 from discord.ext import commands
 import os
 import traceback
